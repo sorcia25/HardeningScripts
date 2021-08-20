@@ -36,6 +36,18 @@ fail=0
 ############################################################################################################################
 ###########################################################################################################################
 
+##Category 1.1 Initial Setup - Filesystem Configuration
+echo
+echo -e "${BLUE}Initial Setup - Filesystem Configuration${NC}"
+
+##Category 1.2 Initial Setup - Configure Software Updates
+echo
+echo -e "${BLUE}Initial Setup - Configure Software Updates${NC}"
+
+##Category 1.3 Initial Setup - Filesystem Integrity Checking
+echo
+echo -e "${BLUE}Initial Setup - Secure Boot Settings${NC}"
+
 ##Category 1.4 Initial Setup - Secure Boot Settings
 echo
 echo -e "${BLUE}Initial Setup - Secure Boot Settings${NC}"
