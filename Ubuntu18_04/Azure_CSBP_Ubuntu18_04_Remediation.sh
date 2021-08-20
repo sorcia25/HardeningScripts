@@ -28,6 +28,7 @@ RED='\033[1;31m'
 GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[1;34m'
+PURPLE='\033[1;35m'
 NC='\033[0m'
 
 success=0
@@ -119,7 +120,7 @@ fi
 echo
 echo -e "${RED}1.1.2${NC} Ensure separate partition exists for /tmp"
 echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${YELLOW} REASON: This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
+echo -e "${PURPLE} REASON:{NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
 echo -e ""
 
 # 1.1.20 Ensure sticky bit is set on all world-writable directories
