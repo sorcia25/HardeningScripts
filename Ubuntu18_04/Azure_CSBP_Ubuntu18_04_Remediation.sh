@@ -27,7 +27,7 @@
 RED='\033[1;31m'
 GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
-BLUE='\033[1;35m'
+BLUE='\033[1;34m'
 NC='\033[0m'
 
 success=0
@@ -35,7 +35,7 @@ fail=0
 
 ##Category Initial Setup - Additional Process Hardening
 echo
-echo -e "${BLUE} Initial Setup - Additional Process Hardening${NC}"
+echo -e "${BLUE}Initial Setup - Additional Process Hardening${NC}"
 
 # 1.5.3 Ensure address space layout randomization (ASLR) is enabled
 echo
