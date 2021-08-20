@@ -55,7 +55,93 @@ else
   echo -e "${RED}UnableToRemediate:${NC} Ensure mounting of cramfs filesystems is disabled"
 fi
 
+#Ensure mounting of freevxfs filesystems is disabled
+echo
+echo -e "${RED}1.1.1.2${NC} Ensure mounting of freevxfs filesystems is disabled"
+modprobe -n -v freevxfs | grep "^install /bin/true$" || echo "install freevxfs /bin/true" >> /etc/modprobe.d/CIS.conf
+policystatus=$?
+lsmod | egrep "^freevxfs\s" && rmmod freevxfs
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Ensure mounting of freevxfs filesystems is disabled"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Ensure mounting of freevxfs filesystems is disabled"
+fi
 
+#Ensure mounting of jffs2 filesystems is disabled
+echo
+echo -e "${RED}1.1.1.3${NC} Ensure mounting of jffs2 filesystems is disabled"
+modprobe -n -v jffs2 | grep "^install /bin/true$" || echo "install jffs2 /bin/true" >> /etc/modprobe.d/CIS.conf
+policystatus=$?
+lsmod | egrep "^jffs2\s" && rmmod jffs2
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Ensure mounting of jffs2 filesystems is disabled"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Ensure mounting of jffs2 filesystems is disabled"
+fi
+
+#Ensure mounting of hfs filesystems is disabled
+echo
+echo -e "${RED}1.1.1.4${NC} Ensure mounting of hfs filesystems is disabled"
+modprobe -n -v hfs | grep "^install /bin/true$" || echo "install hfs /bin/true" >> /etc/modprobe.d/CIS.conf
+policystatus=$?
+lsmod | egrep "^hfs\s" && rmmod hfs
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Ensure mounting of hfs filesystems is disabled"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Ensure mounting of hfs filesystems is disabled"
+fi
+
+#Ensure mounting of hfsplus filesystems is disabled
+echo
+echo -e "${RED}1.1.1.5${NC} Ensure mounting of hfsplus filesystems is disabled"
+modprobe -n -v hfsplus | grep "^install /bin/true$" || echo "install hfsplus /bin/true" >> /etc/modprobe.d/CIS.conf
+policystatus=$?
+lsmod | egrep "^hfsplus\s" && rmmod hfsplus
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Ensure mounting of hfsplus filesystems is disabled"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Ensure mounting of hfsplus filesystems is disabled"
+fi
+
+# 1.1.1.6 Ensure mounting of udf filesystems is disabled
+echo
+echo -e "${RED}1.1.1.6${NC} Ensure mounting of udf filesystems is disabled"
+modprobe -n -v udf | grep "^install /bin/true$" || echo "install udf /bin/true" >> /etc/modprobe.d/CIS.conf
+policystatus=$?
+lsmod | egrep "^udf\s" && rmmod udf
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Ensure mounting of udf filesystems is disabled"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Ensure mounting of udf filesystems is disabled"
+fi
+
+# 1.1.2 Ensure separate partition exists for /tmp
+echo
+echo -e "${RED}1.1.2${NC} Ensure separate partition exists for /tmp"
+echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${YELLOW} REASON: This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
+
+# 1.1.20 Ensure sticky bit is set on all world-writable directories
+echo
+echo -e "${RED}1.1.20${NC} Ensure sticky bit is set on all world-writable directories"
+df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Ensure sticky bit is set on all world-writable directories"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Ensure sticky bit is set on all world-writable directories"
+fi
+
+# 1.1.21 Disable Automounting
+echo
+echo -e "${RED}1.1.21${NC} Disable Automounting"
+systemctl disable autofs.service
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Disable Automounting"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Disable Automounting"
+fi
 
 ##Category 1.2 Initial Setup - Configure Software Updates
 echo
@@ -83,37 +169,3 @@ echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
 echo
 echo -e "${RED}1.4.3${NC} Ensure authentication required for single user mode"
 echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
-
-##Category 1.5 Initial Setup - Additional Process Hardening
-echo
-echo -e "${BLUE}Initial Setup - Additional Process Hardening${NC}"
-
-# 1.5.3 Ensure address space layout randomization (ASLR) is enabled
-echo
-echo -e "${RED}1.5.3${NC} Ensure address space layout randomization (ASLR) is enabled"
-egrep -q "^(\s*)kernel.randomize_va_space\s*=\s*\S+(\s*#.*)?\s*$" /etc/sysctl.conf && sed -ri "s/^(\s*)kernel.randomize_va_space\s*=\s*\S+(\s*#.*)?\s*$/\1kernel.randomize_va_space = 2\2/" /etc/sysctl.conf || echo "kernel.randomize_va_space = 2" >> /etc/sysctl.conf
-policystatus=$?
-if [[ "$policystatus" -eq 0 ]]; then
-    echo -e "${GREEN}Remediated:${NC} Ensure address space layout randomization (ASLR) is enabled"
-    success=$((success + 1))
-else
-    echo -e "${RED}UnableToRemediate:${NC} Ensure address space layout randomization (ASLR) is enabled"
-    fail=$((fail + 1))
-fi
-
-##Category 2.1 Services - inetd Services
-echo
-echo -e "${BLUE}2.1 Services - inetd Services${NC}"
-
-# 2.2.10 Ensure xinetd is not enabled
-echo
-echo -e "${RED}2.1.10${NC} Ensure xinetd is not enabled"
-systemctl disable xinetd
-policystatus=$?
-if [[ "$policystatus" -eq 0 ]]; then
-    echo -e "${GREEN}Remediated:${NC} Ensure xinetd is not enabled"
-    success=$((success + 1))
-else
-    echo -e "${RED}UnableToRemediate:${NC} Ensure xinetd is not enabled"
-    fail=$((fail + 1))
-fi
