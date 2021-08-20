@@ -40,6 +40,23 @@ fail=0
 echo
 echo -e "${BLUE}Initial Setup - Filesystem Configuration${NC}"
 
+echo
+echo -e "${BLUE}1.1 Initial Setup - Filesystem Configuration${NC}"
+
+#Ensure mounting of cramfs filesystems is disabled
+echo
+echo -e "${RED}1.1.1.1${NC} Ensure mounting of cramfs filesystems is disabled"
+modprobe -n -v cramfs | grep "^install /bin/true$" || echo "install cramfs /bin/true" >> /etc/modprobe.d/CIS.conf
+policystatus=$?
+lsmod | egrep "^cramfs\s" && rmmod cramfs
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Ensure mounting of cramfs filesystems is disabled"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Ensure mounting of cramfs filesystems is disabled"
+fi
+
+
+
 ##Category 1.2 Initial Setup - Configure Software Updates
 echo
 echo -e "${BLUE}Initial Setup - Configure Software Updates${NC}"
