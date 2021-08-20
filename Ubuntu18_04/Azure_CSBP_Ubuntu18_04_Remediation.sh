@@ -124,9 +124,15 @@ echo -e "${PURPLE} REASON:${NC} This setting must be configured during the insta
 
 # 1.1.3  Ensure nodev option set on /tmp partition 
 echo
-echo -e "${RED}1.1.3${NC}  Ensure nodev option set on /tmp partition "
+echo -e "${RED}1.1.3${NC} Ensure nodev option set on /tmp partition"
 echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} The /tmp partition isn't exist"
+echo -e "${PURPLE} REASON:${NC} The /tmp partition isn't exist on an Azure VM"
+
+# 1.1.4  Ensure nosuid option set on /tmp partition  
+echo
+echo -e "${RED}1.1.4${NC} Ensure nosuid option set on /tmp partition"
+echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${PURPLE} REASON:${NC} The /tmp partition isn't exist on an Azure VM"
 
 # 1.1.20 Ensure sticky bit is set on all world-writable directories
 echo
