@@ -33,7 +33,29 @@ NC='\033[0m'
 success=0
 fail=0
 
-##Category Initial Setup - Additional Process Hardening
+############################################################################################################################
+###########################################################################################################################
+
+##Category 1.4 Initial Setup - Secure Boot Settings
+echo
+echo -e "${BLUE}Initial Setup - Secure Boot Settings${NC}"
+
+# 1.4.1 Ensure permissions on bootloader config are configured
+echo
+echo -e "${RED}1.4.1${NC} Ensure permissions on bootloader config are configured"
+echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
+
+# 1.4.2 Ensure permissions on bootloader config are configured
+echo
+echo -e "${RED}1.4.2${NC} Ensure bootloader password is configured"
+echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
+
+# 1.4.3 Ensure authentication required for single user mode
+echo
+echo -e "${RED}1.4.3${NC} Ensure authentication required for single user mode"
+echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
+
+##Category 1.5 Initial Setup - Additional Process Hardening
 echo
 echo -e "${BLUE}Initial Setup - Additional Process Hardening${NC}"
 
