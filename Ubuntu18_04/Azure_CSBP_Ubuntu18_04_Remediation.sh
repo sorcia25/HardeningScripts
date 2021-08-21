@@ -30,6 +30,8 @@ YELLOW='\033[1;33m'
 BLUE='\033[1;34m'
 PURPLE='\033[1;35m'
 NC='\033[0m'
+bold=$(tput bold),
+normal=$(tput sgr0)
 
 success=0
 fail=0
@@ -126,13 +128,31 @@ echo -e "${PURPLE} REASON:${NC} This setting must be configured during the insta
 echo
 echo -e "${RED}1.1.3${NC} Ensure nodev option set on /tmp partition"
 echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} The /tmp partition isn't exist on an Azure VM"
+echo -e "${PURPLE} REASON:${NC} The /tmp partition doesn't exist on an Azure VM"
 
 # 1.1.4  Ensure nosuid option set on /tmp partition  
 echo
 echo -e "${RED}1.1.4${NC} Ensure nosuid option set on /tmp partition"
-echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} The /tmp partition isn't exist on an Azure VM"
+echo -e "${GREEN}${bold}OK ${YELLOW}${normal} This setting isn't applicable for an Azure VM"
+echo -e "${PURPLE} REASON:${NC} The /tmp partition doesn't exist on an Azure VM"
+
+# 1.1.5  Ensure separate partition exists for /var   
+echo
+echo -e "${RED}1.1.4${NC} Ensure nosuid option set on /tmp partition"
+echo -e "${GREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${PURPLE} REASON:${NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
+
+# 1.1.6  Ensure separate partition exists for /var/tmp  
+echo
+echo -e "${RED}1.1.4${NC} Ensure nosuid option set on /tmp partition"
+echo -e "${GREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${PURPLE} REASON:${NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
+
+# 1.1.7  Ensure nodev option set on /var/tmp partition   
+echo
+echo -e "${RED}1.1.4${NC} Ensure nosuid option set on /tmp partition"
+echo -e "${GREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${PURPLE} REASON:${NC} The /var/tmp partition doesn't exist on an Azure VM"
 
 # 1.1.20 Ensure sticky bit is set on all world-writable directories
 echo
