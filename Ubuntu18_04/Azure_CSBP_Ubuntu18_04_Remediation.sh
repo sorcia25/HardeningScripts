@@ -25,12 +25,12 @@
 '
 
 RED='\033[1;31m'
-GREEN='\033[1;32m'
+GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[1;34m'
 PURPLE='\033[1;35m'
 NC='\033[0m'
-BGREEN='\033[1m'
+BGREEN='\033[1;32m'
 
 success=0
 fail=0
