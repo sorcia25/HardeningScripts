@@ -30,7 +30,7 @@ YELLOW='\033[1;33m'
 BLUE='\033[1;34m'
 PURPLE='\033[1;35m'
 NC='\033[0m'
-bold=$(tput bold),
+bold=$(tput bold)
 normal=$(tput sgr0)
 
 success=0
