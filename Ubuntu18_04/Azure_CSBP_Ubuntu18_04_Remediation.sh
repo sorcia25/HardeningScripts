@@ -30,7 +30,11 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 NC='\033[0m'
+RED='\033[1;31m'
 BGREEN='\033[1;32m'
+BYELLOW='\033[1;33m'
+BBLUE='\033[1;34m'
+BPURPLE='\033[1;35m'
 
 success=0
 fail=0
@@ -40,14 +44,14 @@ fail=0
 
 ##Category 1.1 Initial Setup - Filesystem Configuration
 echo
-echo -e "${BLUE}Initial Setup - Filesystem Configuration${NC}"
+echo -e "${BBLUE}Initial Setup - Filesystem Configuration${NC}"
 
 echo
 echo -e "${BLUE}1.1 Initial Setup - Filesystem Configuration${NC}"
 
 #Ensure mounting of cramfs filesystems is disabled
 echo
-echo -e "${RED}1.1.1.1${NC} Ensure mounting of cramfs filesystems is disabled"
+echo -e "${BRED}1.1.1.1${NC} Ensure mounting of cramfs filesystems is disabled"
 modprobe -n -v cramfs | grep "^install /bin/true$" || echo "install cramfs /bin/true" >> /etc/modprobe.d/CIS.conf
 policystatus=$?
 lsmod | egrep "^cramfs\s" && rmmod cramfs
@@ -59,7 +63,7 @@ fi
 
 #Ensure mounting of freevxfs filesystems is disabled
 echo
-echo -e "${RED}1.1.1.2${NC} Ensure mounting of freevxfs filesystems is disabled"
+echo -e "${BRED}1.1.1.2${NC} Ensure mounting of freevxfs filesystems is disabled"
 modprobe -n -v freevxfs | grep "^install /bin/true$" || echo "install freevxfs /bin/true" >> /etc/modprobe.d/CIS.conf
 policystatus=$?
 lsmod | egrep "^freevxfs\s" && rmmod freevxfs
@@ -71,7 +75,7 @@ fi
 
 #Ensure mounting of jffs2 filesystems is disabled
 echo
-echo -e "${RED}1.1.1.3${NC} Ensure mounting of jffs2 filesystems is disabled"
+echo -e "${BRED}1.1.1.3${NC} Ensure mounting of jffs2 filesystems is disabled"
 modprobe -n -v jffs2 | grep "^install /bin/true$" || echo "install jffs2 /bin/true" >> /etc/modprobe.d/CIS.conf
 policystatus=$?
 lsmod | egrep "^jffs2\s" && rmmod jffs2
@@ -83,7 +87,7 @@ fi
 
 #Ensure mounting of hfs filesystems is disabled
 echo
-echo -e "${RED}1.1.1.4${NC} Ensure mounting of hfs filesystems is disabled"
+echo -e "${BRED}1.1.1.4${NC} Ensure mounting of hfs filesystems is disabled"
 modprobe -n -v hfs | grep "^install /bin/true$" || echo "install hfs /bin/true" >> /etc/modprobe.d/CIS.conf
 policystatus=$?
 lsmod | egrep "^hfs\s" && rmmod hfs
@@ -95,7 +99,7 @@ fi
 
 #Ensure mounting of hfsplus filesystems is disabled
 echo
-echo -e "${RED}1.1.1.5${NC} Ensure mounting of hfsplus filesystems is disabled"
+echo -e "${BRED}1.1.1.5${NC} Ensure mounting of hfsplus filesystems is disabled"
 modprobe -n -v hfsplus | grep "^install /bin/true$" || echo "install hfsplus /bin/true" >> /etc/modprobe.d/CIS.conf
 policystatus=$?
 lsmod | egrep "^hfsplus\s" && rmmod hfsplus
@@ -107,7 +111,7 @@ fi
 
 # 1.1.1.6 Ensure mounting of udf filesystems is disabled
 echo
-echo -e "${RED}1.1.1.6${NC} Ensure mounting of udf filesystems is disabled"
+echo -e "${BRED}1.1.1.6${NC} Ensure mounting of udf filesystems is disabled"
 modprobe -n -v udf | grep "^install /bin/true$" || echo "install udf /bin/true" >> /etc/modprobe.d/CIS.conf
 policystatus=$?
 lsmod | egrep "^udf\s" && rmmod udf
@@ -119,43 +123,43 @@ fi
 
 # 1.1.2 Ensure separate partition exists for /tmp
 echo
-echo -e "${RED}1.1.2${NC} Ensure separate partition exists for /tmp"
+echo -e "${BRED}1.1.2${NC} Ensure separate partition exists for /tmp"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
+echo -e "${BPURPLE}REASON:${NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
 
 # 1.1.3  Ensure nodev option set on /tmp partition 
 echo
-echo -e "${RED}1.1.3${NC} Ensure nodev option set on /tmp partition"
+echo -e "${BRED}1.1.3${NC} Ensure nodev option set on /tmp partition"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} The /tmp partition doesn't exist on an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} The /tmp partition doesn't exist on an Azure VM"
 
 # 1.1.4  Ensure nosuid option set on /tmp partition  
 echo
-echo -e "${RED}1.1.4${NC} Ensure nosuid option set on /tmp partition"
+echo -e "${BRED}1.1.4${NC} Ensure nosuid option set on /tmp partition"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} The /tmp partition doesn't exist on an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} The /tmp partition doesn't exist on an Azure VM"
 
 # 1.1.5  Ensure separate partition exists for /var   
 echo
-echo -e "${RED}1.1.5${NC} Ensure separate partition exists for /var"
+echo -e "${BRED}1.1.5${NC} Ensure separate partition exists for /var"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
+echo -e "${BPURPLE}REASON:${NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
 
 # 1.1.6  Ensure separate partition exists for /var/tmp  
 echo
-echo -e "${RED}1.1.6${NC} Ensure separate partition exists for /var/tmp"
-echo -e "${GREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
+echo -e "${BRED}1.1.6${NC} Ensure separate partition exists for /var/tmp"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} This setting must be configured during the installation, and in this case the VM was created based on a Azure image"
 
 # 1.1.7  Ensure nodev option set on /var/tmp partition   
 echo
-echo -e "${RED}1.1.7${NC} Ensure nodev option set on /var/tmp partition"
-echo -e "${GREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
-echo -e "${PURPLE} REASON:${NC} The /var/tmp partition doesn't exist on an Azure VM"
+echo -e "${BRED}1.1.7${NC} Ensure nodev option set on /var/tmp partition"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} The /var/tmp partition doesn't exist on an Azure VM"
 
 # 1.1.20 Ensure sticky bit is set on all world-writable directories
 echo
-echo -e "${RED}1.1.20${NC} Ensure sticky bit is set on all world-writable directories"
+echo -e "${BRED}1.1.20${NC} Ensure sticky bit is set on all world-writable directories"
 df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
 policystatus=$?
 if [[ "$policystatus" -eq 0 ]]; then
@@ -166,7 +170,7 @@ fi
 
 # 1.1.21 Disable Automounting
 echo
-echo -e "${RED}1.1.21${NC} Disable Automounting"
+echo -e "${BRED}1.1.21${NC} Disable Automounting"
 systemctl disable autofs.service
 policystatus=$?
 if [[ "$policystatus" -eq 0 ]]; then
@@ -177,27 +181,27 @@ fi
 
 ##Category 1.2 Initial Setup - Configure Software Updates
 echo
-echo -e "${BLUE}Initial Setup - Configure Software Updates${NC}"
+echo -e "${BBLUE}Initial Setup - Configure Software Updates${NC}"
 
 ##Category 1.3 Initial Setup - Filesystem Integrity Checking
 echo
-echo -e "${BLUE}Initial Setup - Secure Boot Settings${NC}"
+echo -e "${BBLUE}Initial Setup - Secure Boot Settings${NC}"
 
 ##Category 1.4 Initial Setup - Secure Boot Settings
 echo
-echo -e "${BLUE}Initial Setup - Secure Boot Settings${NC}"
+echo -e "${BBLUE}Initial Setup - Secure Boot Settings${NC}"
 
 # 1.4.1 Ensure permissions on bootloader config are configured
 echo
-echo -e "${RED}1.4.1${NC} Ensure permissions on bootloader config are configured"
-echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BRED}1.4.1${NC} Ensure permissions on bootloader config are configured"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
 
 # 1.4.2 Ensure permissions on bootloader config are configured
 echo
-echo -e "${RED}1.4.2${NC} Ensure bootloader password is configured"
-echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BRED}1.4.2${NC} Ensure bootloader password is configured"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
 
 # 1.4.3 Ensure authentication required for single user mode
 echo
-echo -e "${RED}1.4.3${NC} Ensure authentication required for single user mode"
-echo -e "${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BRED}1.4.3${NC} Ensure authentication required for single user mode"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
