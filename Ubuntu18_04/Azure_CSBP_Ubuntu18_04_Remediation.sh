@@ -53,9 +53,13 @@ fail=0
 sudo apt-get install screenfetch -y
 echo '#!/bin/sh' >> /etc/update-motd.d/01-custom
 echo 'echo "GENERAL SYSTEM INFORMATION"' >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
 echo '/usr/bin/screenfetch'  >> /etc/update-motd.d/01-custom
 echo 'echo' >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
 echo 'echo "WELCOME TO UBUNTU HARDENED"' >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
 
 ############################################################################################################################
 ############################################################################################################################
@@ -200,7 +204,7 @@ policystatus=$?
 if [[ "$policystatus" -eq 0 ]]; then
   echo -e "${GREEN}Remediated:${NC} Disable Automounting"
 else
-  echo -e "$${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+  echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
   echo -e "${BPURPLE}REASON:${NC} The autofs.service doesn't exist on an Azure VM"
 fi
 
