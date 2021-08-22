@@ -52,6 +52,7 @@ fail=0
 
 apt update
 apt install screenfetch -y
+policystatus=$?
 echo '#!/bin/sh' >> /etc/update-motd.d/01-custom
 echo 'echo "GENERAL SYSTEM INFORMATION"' >> /etc/update-motd.d/01-custom
 echo 'echo' >> /etc/update-motd.d/01-custom
