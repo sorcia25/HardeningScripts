@@ -48,26 +48,6 @@ fail=0
 ############################################################################################################################
 ############################################################################################################################
 
-##PreConfiguration (Intallation of packages that we used to customize the Ubuntu on Azure (Toño Maldonado)
-
-apt update
-apt install screenfetch -y
-policystatus=$?
-chmod -x /etc/update-motd.d/*
-echo '#!/bin/sh' >> /etc/update-motd.d/01-custom
-echo 'echo "GENERAL SYSTEM INFORMATION"' >> /etc/update-motd.d/01-custom
-echo 'echo' >> /etc/update-motd.d/01-custom
-echo '/usr/bin/screenfetch'  >> /etc/update-motd.d/01-custom
-echo 'echo' >> /etc/update-motd.d/01-custom
-echo 'echo' >> /etc/update-motd.d/01-custom
-echo 'echo "WELCOME TO UBUNTU HARDENED"' >> /etc/update-motd.d/01-custom
-echo 'echo' >> /etc/update-motd.d/01-custom
-echo 'echo' >> /etc/update-motd.d/01-custom
-chmod +x /etc/update-motd.d/01-custom
-
-############################################################################################################################
-############################################################################################################################
-
 ##Category 1.1 Initial Setup - Filesystem Configuration
 echo
 echo -e "${BBLUE}Initial Setup - Filesystem Configuration${NC}"
@@ -337,9 +317,9 @@ echo -e "${RED}1.6.2.2${NC} Ensure all AppArmor Profiles are enforcing"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
 echo -e "${BPURPLE}REASON:${NC} Azure by default configure the AppArmor settings, and are enabled by default"
 
-# 1.6.3 Ensure SELinux or AppArmor are installed 
+# 1.6.2.3 Ensure SELinux or AppArmor are installed 
 echo
-echo -e "${RED}1.632${NC} Ensure SELinux or AppArmor are installed"
+echo -e "${RED}1.6.2.3${NC} Ensure SELinux or AppArmor are installed"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
 echo -e "${BPURPLE}REASON:${NC} Azure by default configure the AppArmor settings, and are enabled by default"
 
@@ -349,15 +329,105 @@ echo -e "${BPURPLE}REASON:${NC} Azure by default configure the AppArmor settings
 echo
 echo -e "${BBLUE}Initial Setup - Mandatory Access Control${NC}"
 
-# 1.
+# 1.7.1 Command Line Warning Banners
+# 1.7.1.1 Ensure message of the day is configured properly
+echo
+echo -e "${RED}1.7.1.1${NC} Ensure message of the day is configured properly"
+apt update
+apt install screenfetch -y
+policystatus=$?
+chmod -x /etc/update-motd.d/*
+echo '#!/bin/sh' >> /etc/update-motd.d/01-custom
+echo 'echo "GENERAL SYSTEM INFORMATION"' >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
+echo '/usr/bin/screenfetch'  >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
+echo 'echo "WELCOME TO UBUNTU HARDENED"' >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
+echo 'echo' >> /etc/update-motd.d/01-custom
+chmod +x /etc/update-motd.d/01-custom
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+    echo -e "${GREEN}Remediated:${NC} Ensure message of the day is configured properly"
+    success=$((success + 1))
+else
+    echo -e "${RED}UnableToRemediate:${NC} Ensure message of the day is configured properly"
+    fail=$((fail + 1))
+fi
+
+# 1.7.1.2 Ensure local login warning banner is configured properly
+echo
+echo -e "${RED}1.7.1.2${NC} Ensure local login warning banner is configured properly"
+echo "Authorized uses only. All activity may be monitored and reported." > /etc/issue
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+    echo -e "${GREEN}Remediated:${NC} Ensure local login warning banner is configured properly"
+    success=$((success + 1))
+else
+    echo -e "${RED}UnableToRemediate:${NC} Ensure local login warning banner is configured properly"
+    fail=$((fail + 1))
+fi
+
+# 1.7.1.3 Ensure remote login warning banner is configured properly
+echo
+echo -e "${RED}1.7.1.3${NC} Ensure remote login warning banner is configured properly"
+echo "Authorized uses only. All activity may be monitored and reported." > /etc/issue.net
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+    echo -e "${GREEN}Remediated:${NC} Ensure remote login warning banner is configured properly"
+    success=$((success + 1))
+else
+    echo -e "${RED}UnableToRemediate:${NC} Ensure remote login warning banner is configured properly"
+    fail=$((fail + 1))
+fi
+
+# 1.7.1.4 Ensure permissions on /etc/motd are configured
+echo
+echo -e "${RED}1.7.1.4${NC} Ensure permissions on /etc/motd are configured"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure Ubuntu VM doesn't have this file"
+
+# 1.7.1.5 Ensure permissions on /etc/issue are configured
+echo
+echo -e "${RED}1.7.1.5${NC} Ensure permissions on /etc/issue are configured"
+chown root:root /etc/issue
+chmod 644 /etc/issue
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+    echo -e "${GREEN}Remediated:${NC} Ensure permissions on /etc/issue are configured"
+    success=$((success + 1))
+else
+    echo -e "${RED}UnableToRemediate:${NC} Ensure permissions on /etc/issue are configured"
+    fail=$((fail + 1))
+fi
+
+# 1.7.1.6 Ensure permissions on /etc/issue.net are configured
+echo
+echo -e "${RED}1.7.1.6${NC} Ensure permissions on /etc/issue.net are configured"
+chown root:root /etc/issue.net
+chmod 644 /etc/issue.net
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+    echo -e "${GREEN}Remediated:${NC} Ensure permissions on /etc/issue.net are configured"
+    success=$((success + 1))
+else
+    echo -e "${RED}UnableToRemediate:${NC} Ensure permissions on /etc/issue.net are configured"
+    fail=$((fail + 1))
+fi
+
+# 1.7.2 Ensure GDM login banner is configured
+echo
+echo -e "${RED}1.7.2${NC} Ensure GDM login banner is configured"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure Ubuntu VM doesn't have this file"
 
 ############################################################################################################################
 
 ## 1.8 Ensure updates, patches, and additional security software are installed
 echo
 echo -e "${RED}1.8${NC} Ensure updates, patches, and additional security software are installed"
-apt update
-apt install unattended-upgrades
+apt-get -s upgrade
 policystatus=$?
 if [[ "$policystatus" -eq 0 ]]; then
   echo -e "${GREEN}Remediated:${NC} Ensure updates, patches, and additional security software are installed"
