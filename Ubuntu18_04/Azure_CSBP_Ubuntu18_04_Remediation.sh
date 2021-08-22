@@ -46,7 +46,7 @@ success=0
 fail=0
 
 ############################################################################################################################
-###########################################################################################################################
+############################################################################################################################
 
 ##Category 1.1 Initial Setup - Filesystem Configuration
 echo
@@ -163,6 +163,12 @@ echo -e "${BRED}1.1.7${NC} Ensure nodev option set on /var/tmp partition"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
 echo -e "${BPURPLE}REASON:${NC} The /var/tmp partition doesn't exist on an Azure VM"
 
+# 1.1.8  Ensure nodev option set on /var/tmp partition 
+echo
+echo -e "${BRED}1.1.8${NC} Ensure nodev option set on /var/tmp partition"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} The /var/tmp partition doesn't exist on an Azure VM"
+
 # 1.1.20 Ensure sticky bit is set on all world-writable directories
 echo
 echo -e "${BRED}1.1.20${NC} Ensure sticky bit is set on all world-writable directories"
@@ -182,16 +188,43 @@ policystatus=$?
 if [[ "$policystatus" -eq 0 ]]; then
   echo -e "${GREEN}Remediated:${NC} Disable Automounting"
 else
-  echo -e "${RED}UnableToRemediate:${NC} Disable Automounting"
+  echo -e "$${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+  echo -e "${BPURPLE}REASON:${NC} The autofs.service doesn't exist on an Azure VM"
 fi
+
+############################################################################################################################
 
 ##Category 1.2 Initial Setup - Configure Software Updates
 echo
 echo -e "${BBLUE}Initial Setup - Configure Software Updates${NC}"
 
+# 1.2.1 Ensure package manager repositories areconfigured 
+echo
+echo -e "${BRED}1.2.1${NC} Ensure package manager repositories are configured "
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure confugures the repositories nedeed to its VMs"
+
+# 1.2.2 Ensure GPG keys are configured
+echo
+echo -e "${BRED}1.2.2${NC} Ensure GPG keys are configured"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure configures the GPG keys nedeed to verify the package integrity"
+
+############################################################################################################################
+
 ##Category 1.3 Initial Setup - Filesystem Integrity Checking
 echo
-echo -e "${BBLUE}Initial Setup - Secure Boot Settings${NC}"
+echo -e "${BBLUE}Initial Setup - Filesystem Integrity Checking${NC}"
+
+# 1.3.1 Ensure AIDE is installed
+# 1.3.2 Ensure filesystem integrity is regularly checked
+echo
+echo -e "${RED}1.3.1${NC} Ensure AIDE is installed"
+echo -e "${RED}1.3.2${NC} Ensure filesystem integrity is regularly checked"
+echo -e "${BYELLOW}WARNING ${YELLOW} This settings could be replased for another feature on an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure checks the integrity of linux files through Azure Defender, we recommend to enable Azure Defender (aka ASC) to this server"
+
+############################################################################################################################
 
 ##Category 1.4 Initial Setup - Secure Boot Settings
 echo
@@ -201,13 +234,113 @@ echo -e "${BBLUE}Initial Setup - Secure Boot Settings${NC}"
 echo
 echo -e "${BRED}1.4.1${NC} Ensure permissions on bootloader config are configured"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Due the Azure VM nature, we can´t configure this settings, the bootloader isn't accesible"
 
-# 1.4.2 Ensure permissions on bootloader config are configured
+# 1.4.2 Ensure bootloader password is set 
 echo
 echo -e "${BRED}1.4.2${NC} Ensure bootloader password is configured"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Due the Azure VM nature, we can´t configure this settings, the bootloader isn't accesible"
 
 # 1.4.3 Ensure authentication required for single user mode
 echo
 echo -e "${BRED}1.4.3${NC} Ensure authentication required for single user mode"
 echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Due the Azure VM nature, we can´t configure this settings, the bootloader isn't accesible"
+
+############################################################################################################################
+
+##Category 1.5 Additional Process Hardening
+echo
+echo -e "${BBLUE}Initial Setup - Additional Process Hardening${NC}"
+
+#1.5.1 Ensure core dumps are restricted
+echo
+echo -e "${BRED}1.5.1${NC} Ensure core dumps are restricted"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Due the Azure VM nature, the core dumps are managed by Azure, and we can use serial console to analyze it"
+
+#1.5.2 Ensure XD/NX support is enabled
+echo
+echo -e "${BRED}1.5.2${NC} Ensure XD/NX support is enabled"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Due the Azure VM nature, this setting couldn't be set in the hardware"
+
+# 1.5.3 Ensure address space layout randomization (ASLR) is enabled
+echo
+echo -e "${RED}1.5.3${NC} Ensure address space layout randomization (ASLR) is enabled"
+egrep -q "^(\s*)kernel.randomize_va_space\s*=\s*\S+(\s*#.*)?\s*$" /etc/sysctl.conf && sed -ri "s/^(\s*)kernel.randomize_va_space\s*=\s*\S+(\s*#.*)?\s*$/\1kernel.randomize_va_space = 2\2/" /etc/sysctl.conf || echo "kernel.randomize_va_space = 2" >> /etc/sysctl.conf
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+    echo -e "${GREEN}Remediated:${NC} Ensure address space layout randomization (ASLR) is enabled"
+    success=$((success + 1))
+else
+    echo -e "${RED}UnableToRemediate:${NC} Ensure address space layout randomization (ASLR) is enabled"
+    fail=$((fail + 1))
+fi
+
+# 1.5.4 Ensure prelinkis disabled
+echo
+echo -e "${RED}1.5.3${NC} Ensure prelinkis disabled"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure by default don't install it on an Ubuntu VM, additional we recommend that use Azure Defender (aka ASC) to guarantee the file integrity"
+
+############################################################################################################################
+
+##Category 1.6 Mandatory Access Control
+echo
+echo -e "${BBLUE}Initial Setup - Mandatory Access Control${NC}"
+
+# 1.6.1 Configure SELinux
+# 1.6.1.1 Ensure SELinux is not disabled in bootloader configuration
+# 1.6.1.2 Ensure the SELinux state is enforcing
+# 1.6.1.3 Ensure SELinux policy is configured
+# 1.6.1.4 Ensure no unconfined daemons exist
+echo
+echo -e "${RED}1.6.1.1${NC} Ensure SELinux is not disabled in bootloader configuration"
+echo -e "${RED}1.6.1.2${NC} Ensure the SELinux state is enforcing"
+echo -e "${RED}1.6.1.3${NC} Ensure SELinux policy is configured"
+echo -e "${RED}1.6.1.4${NC} Ensure no unconfined daemons exist"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure by default don't use SELinux on an Ubuntu VM"
+
+# 1.6.2 Configure AppArmor
+# 1.6.2.1 Ensure AppArmor is not disabled in bootloader configuration
+echo
+echo -e "${RED}1.6.2.1${NC} Ensure AppArmor is not disabled in bootloader configuration"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure by default configure the bootloader settings"
+
+# 1.6.2.2 Ensure all AppArmor Profiles are enforcing
+echo
+echo -e "${RED}1.6.2.2${NC} Ensure all AppArmor Profiles are enforcing"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure by default configure the AppArmor settings, and are enabled by default"
+
+# 1.6.3 Ensure SELinux or AppArmor are installed 
+echo
+echo -e "${RED}1.632${NC} Ensure SELinux or AppArmor are installed"
+echo -e "${BGREEN}OK ${YELLOW} This setting isn't applicable for an Azure VM"
+echo -e "${BPURPLE}REASON:${NC} Azure by default configure the AppArmor settings, and are enabled by default"
+
+############################################################################################################################
+
+##Category 1.7 Mandatory Access Control
+echo
+echo -e "${BBLUE}Initial Setup - Mandatory Access Control${NC}"
+
+# 1.
+
+############################################################################################################################
+
+## 1.8 Ensure updates, patches, and additional security software are installed
+echo
+echo -e "${RED}1.8${NC} Ensure updates, patches, and additional security software are installed"
+apt update
+apt install unattended-upgrades
+policystatus=$?
+if [[ "$policystatus" -eq 0 ]]; then
+  echo -e "${GREEN}Remediated:${NC} Ensure updates, patches, and additional security software are installed"
+else
+  echo -e "${RED}UnableToRemediate:${NC} Ensure updates, patches, and additional security software are installed"
+fi
