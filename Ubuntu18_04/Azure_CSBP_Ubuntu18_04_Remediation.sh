@@ -50,7 +50,7 @@ fail=0
 
 ##PreConfiguration (Intallation of packages that we used to customize the Ubuntu on Azure (Toño Maldonado)
 
-sudo apt-get install screenfetch -y
+apt-get install screenfetch -y
 echo '#!/bin/sh' >> /etc/update-motd.d/01-custom
 echo 'echo "GENERAL SYSTEM INFORMATION"' >> /etc/update-motd.d/01-custom
 echo 'echo' >> /etc/update-motd.d/01-custom
