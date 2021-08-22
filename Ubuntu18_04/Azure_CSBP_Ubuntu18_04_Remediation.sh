@@ -53,6 +53,7 @@ fail=0
 apt update
 apt install screenfetch -y
 policystatus=$?
+chmod -x /etc/update-motd.d/*
 echo '#!/bin/sh' >> /etc/update-motd.d/01-custom
 echo 'echo "GENERAL SYSTEM INFORMATION"' >> /etc/update-motd.d/01-custom
 echo 'echo' >> /etc/update-motd.d/01-custom
@@ -62,6 +63,7 @@ echo 'echo' >> /etc/update-motd.d/01-custom
 echo 'echo "WELCOME TO UBUNTU HARDENED"' >> /etc/update-motd.d/01-custom
 echo 'echo' >> /etc/update-motd.d/01-custom
 echo 'echo' >> /etc/update-motd.d/01-custom
+chmod +x /etc/update-motd.d/01-custom
 
 ############################################################################################################################
 ############################################################################################################################
