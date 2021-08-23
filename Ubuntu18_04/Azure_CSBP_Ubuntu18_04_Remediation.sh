@@ -469,7 +469,6 @@ echo
 echo -e "${RED}1.7.1.1${NC} Ensure message of the day is configured properly"
 apt update
 apt install screenfetch -y
-
 policystatus=$?
 chmod -x /etc/update-motd.d/*
 echo '#!/bin/sh' >> /etc/update-motd.d/01-custom
