@@ -588,7 +588,7 @@ if [[ "$policystatus" -eq 0 ]]; then
   echo "  1.8 Remediated: Ensure updates, patches, and additional security software are installed" >> /etc/hardening.log
 else
   echo -e "${RED}UnableToRemediate:${NC} Ensure updates, patches, and additional security software are installed"
-  echo "  1.8 UnableToRemediate: Ensure updates, patches, and additional security software are installed" >> /etc/hardening.log
+  echo " 1.8 UnableToRemediate: Ensure updates, patches, and additional security software are installed" >> /etc/hardening.log
 fi
 
 ############################################################################################################################
